@@ -242,6 +242,7 @@ export const S = {
     plannedOnly: 'Inget avbockat',
     futureDate: 'Datumet kan inte vara i framtiden.',
     restingUntil: (n: number) => (n === 1 ? 'redo imorgon' : `redo om ${n} dagar`),
+    trainedToday: 'tränad idag',
   },
 
   settings: {

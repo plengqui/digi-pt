@@ -17,8 +17,9 @@ function emit(next: Partial<PwaState>) {
 
 /**
  * Registers the service worker. The worker uses skipWaiting + clientsClaim, so a new version
- * takes over as soon as it is downloaded; we also check for updates whenever the app is shown
- * again, which means an update reaches the phone within one app restart.
+ * takes over as soon as it is downloaded, and the register helper reloads the page when an
+ * updated worker activates. We also check for updates whenever the app is shown again, which
+ * means an update reaches the phone within one app restart.
  */
 export function setupPwa(): void {
   if (!('serviceWorker' in navigator)) return;
@@ -40,13 +41,6 @@ export function setupPwa(): void {
       });
       window.setInterval(check, 60 * 60 * 1000);
     },
-  });
-  // When a new worker takes control, reload so the new shell is used right away.
-  let reloading = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
-    reloading = true;
-    window.location.reload();
   });
 }
 

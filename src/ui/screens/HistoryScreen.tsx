@@ -44,7 +44,9 @@ export function HistoryScreen({ settings }: { settings: Settings }) {
                       <span aria-hidden="true">{GROUP_ICON[g]}</span> {GROUP_LABEL[g]}
                     </div>
                     <div className="days">{st.daysSince === undefined ? '–' : st.daysSince === 0 ? S.common.today : S.common.daysAgo(st.daysSince)}</div>
-                    <div className="state">{st.state === 'vilar' ? `${STATE_LABEL.vilar} · ${S.history.restingUntil(restLeft)}` : STATE_LABEL[st.state]}</div>
+                    <div className="state">
+                      {st.daysSince === 0 ? S.history.trainedToday : st.state === 'vilar' ? `${STATE_LABEL.vilar} · ${S.history.restingUntil(restLeft)}` : STATE_LABEL[st.state]}
+                    </div>
                   </div>
                 );
               })}

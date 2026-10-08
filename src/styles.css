@@ -534,7 +534,7 @@ p {
   background: var(--primary);
   border-color: var(--primary);
 }
-.check-row.checked .title {
+.check-row.checked:not(.no-strike) .title {
   color: var(--text-muted);
   text-decoration: line-through;
   text-decoration-color: var(--purple-300);
@@ -635,9 +635,7 @@ textarea.input {
   bottom: 0;
   display: flex;
   justify-content: space-around;
-  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: var(--bg-elevated);
   border-top: 1px solid var(--border);
   padding-bottom: var(--safe-bottom);
   z-index: 20;

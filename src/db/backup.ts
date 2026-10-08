@@ -141,12 +141,15 @@ export async function restoreBackup(backup: BackupFile, database: DigitalPtDb = 
   });
 }
 
-/** Whether to nudge: last export older than `days` (or never) and some session changed since. */
+/**
+ * Whether to nudge: the last export (or, before any export, the first use) is older than `days`
+ * and a session with done entries changed since.
+ */
 export function shouldNudgeExport(settings: Settings, sessions: Session[], now: Date, days: number): boolean {
-  if (sessions.length === 0) return false;
-  const last = settings.lastExportAt;
-  if (!last) return true;
-  const ageMs = now.getTime() - new Date(last).getTime();
+  const logged = sessions.filter((s) => s.entries.some((e) => e.done));
+  if (logged.length === 0) return false;
+  const reference = settings.lastExportAt ?? `${settings.firstUseDate}T00:00:00.000Z`;
+  const ageMs = now.getTime() - new Date(reference).getTime();
   if (ageMs < days * 86_400_000) return false;
-  return sessions.some((s) => s.updatedAt > last);
+  return logged.some((s) => s.updatedAt > reference);
 }

@@ -178,6 +178,7 @@ function LibraryList({
               return (
                 <CheckRow
                   key={ex.id}
+                  strike={false}
                   checked={selectedIds.has(ex.id)}
                   title={ex.name}
                   sub={`${ex.type === 'kardio' ? GROUP_LABEL.kardio : ex.primary.map((p) => GROUP_LABEL[p]).join(' · ')} · ${formatDaysAgo(days)}`}

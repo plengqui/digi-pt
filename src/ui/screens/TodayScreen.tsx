@@ -106,8 +106,8 @@ export function TodayScreen({ settings }: { settings: Settings }) {
           <div className="stack">
             <div className="card stack" style={{ gap: 8 }}>
               <div className="row-between">
-                <h2>{doneCount === entries.length ? S.today.allDone : S.today.progress(doneCount, entries.length)}</h2>
-                <Badge tone={doneCount === entries.length ? 'success' : 'soft'}>{S.today.progress(doneCount, entries.length)}</Badge>
+                <h2>{S.today.progress(doneCount, entries.length)}</h2>
+                {doneCount === entries.length ? <Badge tone="success">{S.today.allDone}</Badge> : null}
               </div>
               <Progress value={doneCount} max={entries.length} />
             </div>

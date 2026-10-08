@@ -16,9 +16,10 @@ export function useSettings(): Settings | undefined {
   return useLiveQuery(() => db.settings.get('settings'), []);
 }
 
+/** undefined while loading, null when there is no session for the date. */
 export function useSession(date: string): Session | undefined | null {
-  const s = useLiveQuery(() => db.sessions.get(date), [date]);
-  return s === undefined ? undefined : (s ?? null);
+  const s = useLiveQuery(async () => (await db.sessions.get(date)) ?? null, [date], 'loading' as const);
+  return s === 'loading' ? undefined : s;
 }
 
 /** Today's local date, re-evaluated when the app becomes visible and at midnight. */

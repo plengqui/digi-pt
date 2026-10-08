@@ -116,6 +116,7 @@ export function Onboarding({ onDone }: { onDone: () => void | Promise<void> }) {
             return (
               <CheckRow
                 key={e.id}
+                strike={false}
                 checked={checked}
                 title={e.name}
                 sub={already ? S.exercises.inLibrary : e.equipment}

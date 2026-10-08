@@ -89,17 +89,26 @@ describe('db helpers', () => {
 });
 
 describe('shouldNudgeExport', () => {
-  const sessions = [{ date: '2026-10-01', entries: [], updatedAt: '2026-10-01T10:00:00.000Z' }];
-  it('nudges when never exported and sessions exist', async () => {
+  const sessions = [{ date: '2026-10-01', entries: [{ exerciseId: 'x', done: true, source: 'manual' as const }], updatedAt: '2026-10-01T10:00:00.000Z' }];
+  const planned = [{ date: '2026-10-01', entries: [{ exerciseId: 'x', done: false, source: 'manual' as const }], updatedAt: '2026-10-01T10:00:00.000Z' }];
+
+  it('never nudges without logged sessions', async () => {
     const settings = await ensureSettings(db);
-    expect(shouldNudgeExport(settings, [], new Date(), 30)).toBe(false);
-    expect(shouldNudgeExport(settings, sessions, new Date(), 30)).toBe(true);
+    expect(shouldNudgeExport(settings, [], new Date('2026-12-01T00:00:00Z'), 30)).toBe(false);
+    expect(shouldNudgeExport(settings, planned, new Date('2026-12-01T00:00:00Z'), 30)).toBe(false);
   });
+
+  it('before any export, counts from first use', async () => {
+    const settings = await updateSettings({ firstUseDate: '2026-09-15' }, db);
+    expect(shouldNudgeExport(settings, sessions, new Date('2026-10-08T00:00:00Z'), 30)).toBe(false); // 23 days
+    expect(shouldNudgeExport(settings, sessions, new Date('2026-10-16T00:00:00Z'), 30)).toBe(true); // 31 days
+  });
+
   it('nudges only when the export is old and something changed since', async () => {
     const settings = await updateSettings({ lastExportAt: '2026-09-01T00:00:00.000Z' }, db);
     expect(shouldNudgeExport(settings, sessions, new Date('2026-09-20T00:00:00Z'), 30)).toBe(false); // too recent
     expect(shouldNudgeExport(settings, sessions, new Date('2026-10-08T00:00:00Z'), 30)).toBe(true);
-    const old = [{ date: '2026-08-01', entries: [], updatedAt: '2026-08-01T10:00:00.000Z' }];
+    const old = [{ ...sessions[0]!, date: '2026-08-01', updatedAt: '2026-08-01T10:00:00.000Z' }];
     expect(shouldNudgeExport(settings, old, new Date('2026-10-08T00:00:00Z'), 30)).toBe(false);
   });
 });

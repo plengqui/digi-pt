@@ -138,15 +138,18 @@ export function CheckRow({
   sub,
   onToggle,
   trailing,
+  strike = true,
 }: {
   checked: boolean;
   title: ReactNode;
   sub?: ReactNode;
   onToggle: () => void;
   trailing?: ReactNode;
+  /** Strike through the title when checked (checklists); off for pickers. */
+  strike?: boolean;
 }) {
   return (
-    <div className={`check-row ${checked ? 'checked' : ''}`}>
+    <div className={`check-row ${checked ? 'checked' : ''} ${strike ? '' : 'no-strike'}`}>
       <button type="button" className="row grow" style={{ minHeight: 48, textAlign: 'left' }} onClick={onToggle} aria-pressed={checked}>
         <span className="box" aria-hidden="true">
           {checked ? '✓' : ''}

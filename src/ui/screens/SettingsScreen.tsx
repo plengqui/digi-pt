@@ -255,7 +255,7 @@ function DiagnosticsSheet({ settings, onClose }: { settings: Settings; onClose: 
   const standalone = isStandalone();
   const rows: [string, string][] = [
     [S.settings.version, __APP_VERSION__],
-    [S.settings.buildDate, __BUILD_DATE__.slice(0, 16).replace('T', ' ')],
+    [S.settings.buildDate, new Date(__BUILD_DATE__).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' })],
     [S.settings.displayMode, standalone ? S.settings.standalone : S.settings.browser],
     [S.settings.persisted, persisted === undefined ? S.settings.persistedUnknown : persisted ? S.settings.persistedYes : S.settings.persistedNo],
     [S.settings.storage, estimate?.usage !== undefined && estimate.quota !== undefined ? S.settings.storageUsage(formatBytes(estimate.usage), formatBytes(estimate.quota)) : '–'],

@@ -1,0 +1,12 @@
+{
+  "vader": ["calves"],
+  "lar": ["quads", "hamstrings", "adductors"],
+  "rumpa": ["glutes"],
+  "rygg": ["lats", "upper_back", "lower_back"],
+  "skuldror": ["traps", "rear_delts"],
+  "axlar": ["front_delts", "side_delts"],
+  "brost": ["chest"],
+  "biceps": ["biceps", "forearms"],
+  "triceps": ["triceps"],
+  "mage": ["abs", "obliques"]
+}
